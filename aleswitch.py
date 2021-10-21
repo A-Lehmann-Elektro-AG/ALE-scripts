@@ -90,3 +90,12 @@ class ALESwitch(object):
   def save_config(self):
     self.net_connect.send_command("write memory flash-synchro")
     print("write memory flash-synchro")
+
+  def get_ports_for_vlan(self, vlan_id):
+    res = self.net_connect.send_command("show vlan " + str(vlan_id) + " port")
+    ports = []
+    for x in res.split("\n"):
+      regexsearch = re.search(r'([0-9]/)+[0-9]+', x)
+      if regexsearch: 
+        ports.append(regexsearch.group(0))
+    return ports

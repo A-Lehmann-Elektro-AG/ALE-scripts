@@ -33,18 +33,33 @@ def main():
         # find prompt (test connectivity)
         print(switch.net_connect.find_prompt())
 
-        # # add VLAN on switch
-        # switch.add_vlan(402, "TEST_VLAN_402")
+        # add VLAN on switch
+        # switch.add_vlan(502, "SZK_VLAN502_physio")
+        # switch.add_vlan(402, "SZK_VLAN402_avd")
+        # switch.add_vlan(503, "SZK_VLAN503_bob")
+        # switch.add_vlan(705, "SZK_VLAN705_notlicht")
+        # switch.add_vlan(706, "SZK_VLAN706_usv")
+
+        # get ports for VLAN
+        #ports_vlan_102 = switch.get_ports_for_vlan(102)
+
+        # tag VLAN on filtered ports
+        #switch.port_vlan_tagging(ports_vlan_102, 502)
+        
 
         # # get lldp remote systems
         # switch.get_lldp_remote_system()
 
         # # filter ports which have at least one remote system with name containing "OmniAccess Stellar" 
         # # requires get_lldp_remote_system() to be called first
-        # filtered_ports_aos_uplink = s.find_ports("remote-systems", "Alcatel-Lucent Enterprise OS")
+        # filtered_ports_aos_uplink = switch.find_ports("remote-systems", "Alcatel-Lucent Enterprise OS")
+        # switch.port_vlan_tagging(filtered_ports_aos_uplink, 402)
+        # switch.port_vlan_tagging(filtered_ports_aos_uplink, 503)
+        # switch.port_vlan_tagging(filtered_ports_aos_uplink, 705)
+        # switch.port_vlan_tagging(filtered_ports_aos_uplink, 706)
 
-        # # tag VLAN on filtered ports
-        # s.port_vlan_tagging(filtered_ports_aos_uplink, 402)
+        # save config
+        switch.save_config()
 
         print("----------------------------------------------------\n\n")
 
