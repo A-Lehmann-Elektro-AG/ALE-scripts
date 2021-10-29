@@ -20,48 +20,43 @@ def main():
   f_switches = open("configs/switches.csv", "r")
   for l in f_switches.readlines():
     s = l.strip().split(",")
+    if len(s) == 4:
+      with ALESwitch(s[0], s[1], s[2], s[3]) as switch:
+        if not switch.error:
 
-    with ALESwitch(s[0], s[1], s[2], s[3]) as switch:
-      if not switch.error:
+          print("----------------------------------------------------")
+          print("configure switch: " + switch.name + ", " + switch.ip)
+          
+          ####################################################################################################
+          # code can be added here and will be executed on each switch
 
-        print("----------------------------------------------------")
-        print("configure switch: " + switch.name + ", " + switch.ip)
-        
-        ####################################################################################################
-        # code can be added here and will be executed on each switch
+          # 1. find prompt (test connectivity)
+          print(switch.net_connect.find_prompt())
 
-        # find prompt (test connectivity)
-        print(switch.net_connect.find_prompt())
+          # 2. add VLAN on switch
+          # switch.add_vlan(502, "VLAN502_physio")
 
-        # add VLAN on switch
-        # switch.add_vlan(502, "SZK_VLAN502_physio")
-        # switch.add_vlan(402, "SZK_VLAN402_avd")
-        # switch.add_vlan(503, "SZK_VLAN503_bob")
-        # switch.add_vlan(705, "SZK_VLAN705_notlicht")
-        # switch.add_vlan(706, "SZK_VLAN706_usv")
+          # 3. get ports for VLAN
+          # ports_vlan_102 = switch.get_ports_for_vlan(102)
+          # print(ports_vlan_102)
 
-        # get ports for VLAN
-        #ports_vlan_102 = switch.get_ports_for_vlan(102)
+          # 4. tag VLAN on filtered ports
+          # switch.port_vlan_tagging(ports_vlan_102, 502)
+          
+          # 5. get lldp remote systems
+          # switch.get_lldp_remote_system()
 
-        # tag VLAN on filtered ports
-        #switch.port_vlan_tagging(ports_vlan_102, 502)
-        
+          # 6. filter ports which have at least one remote system with system description containing "OAW-AP", requires get_lldp_remote_system() to be called first
+          # filtered_ports_aos_uplink = switch.find_ports("remote-systems", "OAW-AP")
+          # print(filtered_ports_aos_uplink)
 
-        # # get lldp remote systems
-        # switch.get_lldp_remote_system()
+          # 7. tag vlan on ports
+          # switch.port_vlan_tagging(filtered_ports_aos_uplink, 402)
 
-        # # filter ports which have at least one remote system with name containing "OmniAccess Stellar" 
-        # # requires get_lldp_remote_system() to be called first
-        # filtered_ports_aos_uplink = switch.find_ports("remote-systems", "Alcatel-Lucent Enterprise OS")
-        # switch.port_vlan_tagging(filtered_ports_aos_uplink, 402)
-        # switch.port_vlan_tagging(filtered_ports_aos_uplink, 503)
-        # switch.port_vlan_tagging(filtered_ports_aos_uplink, 705)
-        # switch.port_vlan_tagging(filtered_ports_aos_uplink, 706)
+          # 8. save config
+          # switch.save_config()
 
-        # save config
-        switch.save_config()
-
-        print("----------------------------------------------------\n\n")
+          print("----------------------------------------------------\n\n")
 
 if __name__ == "__main__":
     """ This is executed when run from the command line """
